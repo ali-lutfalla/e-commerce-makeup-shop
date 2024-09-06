@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makeup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gruppo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.1/css/bulma.min.css"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    {% block head %}{% endblock head %}
+</head>
+<body>
+    <header class="container">
+        <nav class="navbar">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <div class="navbar-end">
+                {% if user.is_authenticated %}
+                <div class="navbar-item">
+                    <form action="{% url "logout" %}" method="post" id="logout-form">
+                        {% csrf_token %}
+                        <button type="submit">Log out</button>
+                    </form>
+                </div>
+                <a href="#" class="navbar-item"><span class="icon">
+                    <i class="fas fa-heart"></i>
+                  </span></a>
+                  <a href="#" class="navbar-item"><span class="icon">
+                    <i class="fas fa-shopping-bag"></i>
+                  </span></a>
+                  <a href="#" class="navbar-item"><span class="icon">
+                    <i class="fas fa-user"></i>
+                  </span></a>
+                {% else %}
+                  <a href="#" class="navbar-item"><span class="icon">
+                    <i class="fas fa-heart"></i>
+                  </span></a>
+                  <a href="#" class="navbar-item"><span class="icon">
+                    <i class="fas fa-shopping-bag"></i>
+                  </span></a>
+                  <a href="#" class="navbar-item">Login</a>
+                  <a href="#" class="navbar-item">Sign up</a>
+                  {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
