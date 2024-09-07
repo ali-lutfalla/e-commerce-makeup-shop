@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign Up</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In</title>
   <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@1.0.1/css/bulma.min.css"
@@ -14,8 +14,8 @@
   <div class="p-2">
     <a href="/" class="has-text-centered">Back to home</a>
   </div>
-  
-  <h1 class="has-text-centered">Already got an account? <a href="{% url "signin" %}">sign in</a></h1>
+
+  <h1 class="has-text-centered">Sign into your account</h1>
   <section class="section">
     <div class="container my-6">
       <div class="columns is-vcentered">
@@ -35,42 +35,24 @@
                 </span>
             </div>
         
-            <div class="field">
-                <label class="label" for="password">Email:</label>
-                <p class="control has-icons-left">
-                  {{ form.email }}
-                  <span class="icon is-small is-left">
-                    <i class="fas fa-envelope"></i>
-                  </span>
-                </p>
-              </div>
         
             <div class="field">
               <label class="label" for="password">Password:</label>
               <p class="control has-icons-left">
-                {{ form.password1 }}
+                {{ form.password }}
                 <span class="icon is-small is-left">
                   <i class="fas fa-lock"></i>
                 </span>
               </p>
             </div>
-        
-            <div class="field">
-              <p class="control has-icons-left">
-                {{ form.password2 }}
-                <span class="icon is-small is-left">
-                  <i class="fas fa-lock"></i>
-                </span>
-              </p>
-            </div>
+
             
-            <button class="button is-primary" type="submit">Sign up</button>
+            <button class="button is-primary" type="submit">Sign in</button>
           </form>
         </div>
         <div class="column is-2"></div>
       </div>
     </div>
   </section>
-  
 </body>
 </html>
