@@ -84,6 +84,9 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = "Categories"
 
+    def __str__(self):
+        return self.title
+
 class Product(models.Model):
     productId = ShortUUIDField(unique = True, length=10, max_length=20, prefix="pro", alphabet="abcdefghijk123456789")
     title = models.CharField(max_length=150)
@@ -95,12 +98,19 @@ class Product(models.Model):
     featured = models.BooleanField(default=True)
     on_sale = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.title
+
 class ProductColors(models.Model):
+    colorId =ShortUUIDField(unique = True, length=10, max_length=20, prefix="col", alphabet="abcdefghijk123456789")
     hex_value = models.CharField(max_length=50)
     color_name = models.CharField(max_length=100)
 
     class Meta:
         verbose_name_plural = "Product Colors"
+
+    def __str__(self):
+        return self.color_name
 
 class ProductEntry(models.Model):
     productId = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
