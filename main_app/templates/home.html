@@ -15,6 +15,9 @@
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css" />
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
     {% block head %}{% endblock head %}
 </head>
 <body>
@@ -52,76 +55,134 @@
         </nav>
     </header>
     
-    <section class="section">
-        <div class="container" id="slider">
-            <!-- Start Carousel -->
-            <div id="carousel-demo" class="carousel">
-                <div class="item-1">
-                    <div class="card card-content">
-                        <div class="card-image">
-                          <figure class="image is-4by3">
-                            <img
-                              src="https://makeup-api.herokuapp.com/assets/brushes-6d2ab84631ecd47ced4fa07c47eb37521eb61c5a525965dafaf308f21338aa44.png"
-                              alt="Placeholder image"
-                            />
-                          </figure>
-                        </div>
-                    </div>
-                </div>
-    
-                <div class="item-2">
-                    <div class="card card-content">
-                        <div class="card-image">
-                          <figure class="image is-4by3">
-                            <img
-                              src="https://makeup-api.herokuapp.com/assets/single-pot-4ce398e7d8c527ef248ace7a783cc52fd583375a25a7dcdb7b16f7a0958ccb17.png"
-                              alt="Placeholder image"
-                            />
-                          </figure>
-                        </div>
-                    </div>
-                </div>
-                <div class="item-3">
-                    <div class="card card-content">
-                        <div class="card-image">
-                          <figure class="image is-4by3">
-                            <img
-                              src="https://makeup-api.herokuapp.com/assets/nail-polish-4c7ee1a5f7a5cbaff9757c3bcfa4f6e89d7a6f2ffc49d267e04e010ba94cfd7c.png"
-                              alt="Placeholder image"
-                            />
-                          </figure>
-                        </div>
-                    </div>
-                </div>
-                <div class="item-4">
-                    <div class="card card-content">
-                        <div class="card-image">
-                          <figure class="image is-4by3">
-                            <img
-                              src="https://makeup-api.herokuapp.com/assets/eyeshadow-18fa4bed267bec6a67506150d9574259d0dcc67700e69de4ba720d9afe8204a2.png"
-                              alt="Placeholder image"
-                            />
-                          </figure>
-                        </div>
-                    </div>
-                </div>
-                <div class="item-5">
-                    <div class="card card-content">
-                        <div class="card-image">
-                          <figure class="image is-4by3">
-                            <img
-                              src="https://makeup-api.herokuapp.com/assets/lips-c35ec4a3350ec779c6bf6a785981ad9ef2e21bd9fe26a2be1c766d56edb2e11f.png"
-                              alt="Placeholder image"
-                            />
-                          </figure>
-                        </div>
-                    </div>
-                </div>
-                
-            <div class="item-slide"></div>
-            <!-- End Carousel -->
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="https://makeup-api.herokuapp.com/assets/brushes-6d2ab84631ecd47ced4fa07c47eb37521eb61c5a525965dafaf308f21338aa44.png" class="d-block w-100" alt="...">
         </div>
+        <div class="carousel-item">
+          <img src="https://makeup-api.herokuapp.com/assets/single-pot-4ce398e7d8c527ef248ace7a783cc52fd583375a25a7dcdb7b16f7a0958ccb17.png" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="https://makeup-api.herokuapp.com/assets/nail-polish-4c7ee1a5f7a5cbaff9757c3bcfa4f6e89d7a6f2ffc49d267e04e010ba94cfd7c.png" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="https://makeup-api.herokuapp.com/assets/eyeshadow-18fa4bed267bec6a67506150d9574259d0dcc67700e69de4ba720d9afe8204a2.png" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="https://makeup-api.herokuapp.com/assets/lips-c35ec4a3350ec779c6bf6a785981ad9ef2e21bd9fe26a2be1c766d56edb2e11f.png" class="d-block w-100" alt="...">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+    <section class="section">
+      <div class="container" id="slider">
+          <!-- Start Carousel -->
+          <div id="carousel-demo" class="carousel">
+            {% for item in products %}
+            <div class="card">
+              <div class="card-image">
+                <figure class="image is-16by9">
+                  <img src="{{ item.product.image }}" alt="Placeholder image" />
+                </figure>
+              </div>
+              <div class="card-content">
+                <div class="media">
+                  <div class="media-content">
+                    <p class="title is-4">{{ item.product.title }}</p>
+                    
+                    <p class="subtitle is-6">{{ item.product.price }}</p>
+                    {% if item.product.sale_price %}
+                    <p class="subtitle is-6">{{ item.product.sale_price }}</p>
+                    {% endif %}
+                  
+                    <p class="subtitle is-6"> Product Type: {{ item.product.product_type }}</p>
+                    <p class="subtitle is-6"> Brand: {{ item.product.brand }}</p>
+                  </div>
+              </div> 
+            
+                <div class="content">
+                  <a href="#" class="navbar-item"><span class="icon">
+                    <i class="fas fa-heart"></i>
+                  </span></a>
+                  <a href="#" class="navbar-item"><span class="icon">
+                    <i class="fas fa-shopping-bag"></i>
+                  </span></a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+      </div>
     </section>
+
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+        {% for item in products %}
+            <div class="card">
+              <div class="card-image">
+                <figure class="image is-16by9">
+                  <img src="{{ item.product.image }}" alt="Placeholder image" />
+                </figure>
+              </div>
+              <div class="card-content">
+                <div class="media">
+                  <div class="media-content">
+                    <p class="title is-4">{{ item.product.title }}</p>
+                    
+                    <p class="subtitle is-6">{{ item.product.price }}</p>
+                    {% if item.product.sale_price %}
+                    <p class="subtitle is-6">{{ item.product.sale_price }}</p>
+                    {% endif %}
+                  
+                    <p class="subtitle is-6"> Product Type: {{ item.product.product_type }}</p>
+                    <p class="subtitle is-6"> Brand: {{ item.product.brand }}</p>
+                  </div>
+              </div> 
+            
+                <div class="content">
+                  <a href="#" class="navbar-item"><span class="icon">
+                    <i class="fas fa-heart"></i>
+                  </span></a>
+                  <a href="#" class="navbar-item"><span class="icon">
+                    <i class="fas fa-shopping-bag"></i>
+                  </span></a>
+                </div>
+              </div>
+            </div>
+        </div>
+        {% endfor %}
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+    
+
+
+    <!-- Carousel JS -->
     <script src="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.3/dist/js/bulma-carousel.min.js"></script>
 		<script>
 		bulmaCarousel.attach('#carousel-demo', {

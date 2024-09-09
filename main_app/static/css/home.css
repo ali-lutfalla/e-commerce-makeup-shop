@@ -62,8 +62,14 @@ a[class~="nav-item"] {
   top: 0;
 }
 
+img[alt="Placeholder image"] {
+  max-width: 960px;
+  max-height: 760px; 
+}
+
 .item-slide img {
-  max-width: 1200px;
+  max-width: 960px;
+  max-height: 760px;
 }
 
 .caption-container {

@@ -3,10 +3,25 @@ from django.contrib.auth.views import LoginView
 from .forms import UserSignUpForm, UserSignInForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
+from .models import Category, Product, ProductColors, ProductEntry
 # Create your views here.
 
-class Home(LoginView):
-    template_name = 'home.html'
+def Home(request):
+    featured_products = Product.objects.filter(featured=True)
+    featured_products_with_prices = []
+
+    for product in featured_products:
+        product_entry = ProductEntry.objects.filter(productId=product).first()
+
+        # colors = [entry.colorId for entry in product_entries]
+
+        product.price = product_entry.price
+        product.sale_price = product_entry.sale_price
+
+        featured_products_with_prices.append({
+        'product': product,
+            })
+    return render(request, 'home.html', {'products': featured_products_with_prices})
 
 def signup(request):
     error_message = ''
