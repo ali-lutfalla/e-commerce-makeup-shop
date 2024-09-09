@@ -114,7 +114,7 @@ class ProductColors(models.Model):
 
 class ProductEntry(models.Model):
     productId = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
-    colorId = models.ForeignKey(ProductColors, on_delete=models.SET_NULL, null=True)
+    colorId = models.ForeignKey(ProductColors, on_delete=models.SET_NULL, null=True, blank=True)
     sku = ShortUUIDField(unique = True, length=10, max_length=20, prefix="pro", alphabet="abcdefghijk123456789")
     quantity = models.IntegerField(null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
