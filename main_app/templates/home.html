@@ -130,60 +130,7 @@
           </div>
       </div>
     </section>
-
-    {% comment %} <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-      </div>
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-        {% for item in products %}
-            <div class="card">
-              <div class="card-image">
-                <figure class="image is-16by9">
-                  <img src="{{ item.product.image }}" alt="Placeholder image" />
-                </figure>
-              </div>
-              <div class="card-content">
-                <div class="media">
-                  <div class="media-content">
-                    <p class="title is-4">{{ item.product.title }}</p>
-                    
-                    <p class="subtitle is-6">{{ item.product.price }}</p>
-                    {% if item.product.sale_price %}
-                    <p class="subtitle is-6">{{ item.product.sale_price }}</p>
-                    {% endif %}
-                  
-                    <p class="subtitle is-6"> Product Type: {{ item.product.product_type }}</p>
-                    <p class="subtitle is-6"> Brand: {{ item.product.brand }}</p>
-                  </div>
-              </div> 
-            
-                <div class="content">
-                  <a href="#" class="navbar-item"><span class="icon">
-                    <i class="fas fa-heart"></i>
-                  </span></a>
-                  <a href="#" class="navbar-item"><span class="icon">
-                    <i class="fas fa-shopping-bag"></i>
-                  </span></a>
-                </div>
-              </div>
-            </div>
-        </div>
-        {% endfor %}
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div> {% endcomment %}
     
-
 
     <!-- Carousel JS -->
     <script src="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.3/dist/js/bulma-carousel.min.js"></script>

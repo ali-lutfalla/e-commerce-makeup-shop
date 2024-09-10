@@ -46,6 +46,7 @@ class signin(LoginView):
 def view_cart(request):
     cart_items = CartItem.objects.filter(user=request.user)
     product_of_the_cart = []
+    total_price = 0  # Initialize total price
 
     for cart_item in cart_items:
         try:
@@ -56,25 +57,26 @@ def view_cart(request):
         except Product.DoesNotExist:
             product_info = None
 
-        items = {
-            'product_info': product_info,
-            'product_prices': product_entry,
-            'quantity': cart_item.quantity
-        }
+        if product_entry and product_info:
+            item_total = product_entry.price * cart_item.quantity  # Calculate total for this item
+            total_price += item_total  # Add to total price
 
-        product_of_the_cart.append({
-            'items': items
-        })
+            items = {
+                'product_info': product_info,
+                'product_prices': product_entry,
+                'quantity': cart_item.quantity,
+                'item_total': item_total,
+                'id_of_the_item': cart_item.cart_item_id
+            }
+
+            product_of_the_cart.append({
+                'items': items
+            })
 
     total_items = len(product_of_the_cart)
 
-    check = 1
+    return render(request, "cart/cart.html", {'cart_items': product_of_the_cart, 'total_items': total_items, 'total_price': total_price})
 
-    # Debug prints
-    print("Cart Items:", cart_items)
-    print("Product of the Cart:", product_of_the_cart)
-
-    return render(request, "cart.html", {'cart_items': product_of_the_cart, 'total_items': total_items , 'check': check})
 
 def add_to_cart(request):
     if request.method == "POST":
@@ -93,6 +95,53 @@ def add_to_cart(request):
                 # Log the exception or handle other errors
                 print(f"Error adding to cart: {e}")
     return redirect('home')
+
+def update_cart(request, cartItemId):
+    cart_item = CartItem.objects.get(cart_item_id=cartItemId)
+    new_quantity = request.POST.get('quantity')
+
+    if new_quantity and new_quantity.isdigit():
+        new_quantity = int(new_quantity)
+        if new_quantity > 0:
+            cart_item.quantity = new_quantity
+            cart_item.save()
+        
+        else:
+            cart_item.delete()
+    
+    cart_items = CartItem.objects.filter(user=request.user)
+    product_of_the_cart = []
+    total_price = 0  # Initialize total price
+
+    for cart_item in cart_items:
+        try:
+            product_entry = ProductEntry.objects.get(sku=cart_item.sku)
+            product_info = Product.objects.get(productId=product_entry.productId.productId)
+        except ProductEntry.DoesNotExist:
+            product_entry = None
+        except Product.DoesNotExist:
+            product_info = None
+
+        if product_entry and product_info:
+            item_total = product_entry.price * cart_item.quantity  # Calculate total for this item
+            total_price += item_total  # Add to total price
+
+            items = {
+                'product_info': product_info,
+                'product_prices': product_entry,
+                'quantity': cart_item.quantity,
+                'item_total': item_total,
+                'id_of_the_item': cart_item.cart_item_id
+            }
+
+            product_of_the_cart.append({
+                'items': items
+            })
+
+    total_items = len(product_of_the_cart)
+
+    return render(request, "cart/cart.html", {'cart_items': product_of_the_cart, 'total_items': total_items, 'total_price': total_price})
+
 
 def show_product(request, sku):
     product_to_find = ProductEntry.objects.get(sku = sku)
@@ -115,8 +164,7 @@ def show_product(request, sku):
 
     return render(request, 'products/product-show.html', {'product': product})
 
-def cart(request):
-    return render(request, 'cart/cart.html')
+
     
 
 # def signin(request):
