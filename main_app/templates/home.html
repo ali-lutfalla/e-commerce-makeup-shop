@@ -18,9 +18,10 @@
     {% load bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
+    <script src="https://unpkg.com/htmx.org@2.0.2" integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ" crossorigin="anonymous"></script>
     {% block head %}{% endblock head %}
 </head>
-<body>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     <header class="container">
         <nav class="navbar">
             <a class="navbar-brand" href="#">Navbar</a>
@@ -92,9 +93,10 @@
           <!-- Start Carousel -->
           <div id="carousel-demo" class="carousel">
             {% for item in products %}
+            <a href="{% url 'show_product' item.product.sku %}">
             <div class="card">
               <div class="card-image">
-                <figure class="image is-16by9">
+                <figure class="image ">
                   <img src="{{ item.product.image }}" alt="Placeholder image" />
                 </figure>
               </div>
@@ -108,27 +110,28 @@
                     <p class="subtitle is-6">{{ item.product.sale_price }}</p>
                     {% endif %}
                   
-                    <p class="subtitle is-6"> Product Type: {{ item.product.product_type }}</p>
-                    <p class="subtitle is-6"> Brand: {{ item.product.brand }}</p>
+                    <p class="subtitle is-12"> Product Type: {{ item.product.product_type }}</p>
+                    <p class="subtitle is-12"> Brand: {{ item.product.brand }}</p>
                   </div>
               </div> 
             
                 <div class="content">
-                  <a href="#" class="navbar-item"><span class="icon">
-                    <i class="fas fa-heart"></i>
-                  </span></a>
-                  <a href="#" class="navbar-item"><span class="icon">
-                    <i class="fas fa-shopping-bag"></i>
-                  </span></a>
+                  <a  hx-post="{% url 'addtocart' %}" hx-vals='{"sku": "{{ item.product.sku }}"}' hx-swap="none">
+                    <span class="icon">
+                        <i class="fas fa-heart"></i>
+                    </span>
+                </a>
+    
                 </div>
               </div>
             </div>
+          </a>
             {% endfor %}
           </div>
       </div>
     </section>
 
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    {% comment %} <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-indicators">
         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -178,7 +181,7 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
-    </div>
+    </div> {% endcomment %}
     
 
 

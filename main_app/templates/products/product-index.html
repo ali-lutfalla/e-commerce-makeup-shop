@@ -1,0 +1,53 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block content %}
+<section class="section">
+    <div class="contianer">
+        {% comment %} <% if ( projects.length == 0 ) { %>
+            <h1 class="title has-text-centered">You don't have any projects!</h1>
+        <% } else { %> {% endcomment %}
+            <div class="columns is-multiline">
+                {% comment %} <% projects.forEach((project) => { %> {% endcomment %}
+                <div class="column is-one-third">
+                    <div class="card has-background-link">
+                        <a href="{% url 'show_product' item.product.sku %}">
+                            <div class="card">
+                              <div class="card-image">
+                                <figure class="image is-16by9">
+                                  <img src="{{ item.product.image }}" alt="Placeholder image" />
+                                </figure>
+                              </div>
+                              <div class="card-content">
+                                <div class="media">
+                                  <div class="media-content">
+                                    <p class="title is-4">{{ item.product.title }}</p>
+                                    
+                                    <p class="subtitle is-6">{{ item.product.price }}</p>
+                                    {% if item.product.sale_price %}
+                                    <p class="subtitle is-6">{{ item.product.sale_price }}</p>
+                                    {% endif %}
+                                  
+                                    <p class="subtitle is-12"> Product Type: {{ item.product.product_type }}</p>
+                                    <p class="subtitle is-12"> Brand: {{ item.product.brand }}</p>
+                                  </div>
+                              </div> 
+                            
+                                <div class="content">
+                                  <a  hx-post="{% url 'addtocart' %}" hx-vals='{"sku": "{{ item.product.sku }}"}' hx-swap="none">
+                                    <span class="icon">
+                                        <i class="fas fa-heart"></i>
+                                    </span>
+                                </a>
+                    
+                                </div>
+                              </div>
+                            </div>
+                          </a>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+</section>
+{% endblock content %}

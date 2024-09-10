@@ -1,0 +1,46 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/products/product-show.css' %}" />
+{% endblock head %}
+
+{% block content %}
+<div class="row py-5 g-5">
+    <div class="col-12 col-lg-6 text-center">
+        <img src="{{ product.image }}" 
+             alt="" 
+             class="m-1" 
+             style="object-fit: cover;" 
+             data-bs-toggle="modal" 
+             data-bs-target="#imageModal"
+             >
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-body">
+            <img src="{{ product.image }}" 
+                 alt="" 
+                 class="">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-6 text-center">
+        <h2>Product Name: {{ product.title }}</h2>
+        <p>Product type: <span>{{ product.product_type }}</span></p>
+        <p>category: <span>{{ product.category }}</span></p>
+        <p>Brand: {{ product.brand }}</p>
+        {% if product.sale_price %}
+        <p>Price: {{ product.sale_price }}BD was {{ product.price }}BD </p>
+        {% else %}
+        <p>Price: {{ product.price }}</p>
+        {% endif %}
+        <p>Description: {{ product.description }}</p>
+        <button>Add to cart</button>
+    </div>
+
+</div>
+{% endblock content %}

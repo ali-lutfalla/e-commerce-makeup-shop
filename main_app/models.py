@@ -130,6 +130,7 @@ class CartItem(models.Model):
     cart_item_id = ShortUUIDField(unique = True, length=10, max_length=20, prefix="cart-item", alphabet="abcdefghijk123456789")
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     sku = models.ForeignKey(ProductEntry, on_delete=models.SET_NULL, null=True)
+    quantity = models.IntegerField(null=True,blank=True) 
 
     class Meta:
         verbose_name_plural = "Cart Items"

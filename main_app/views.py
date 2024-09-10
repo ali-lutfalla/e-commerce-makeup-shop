@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView
 from .forms import UserSignUpForm, UserSignInForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
-from .models import Category, Product, ProductColors, ProductEntry
+from .models import Category, Product, ProductColors, ProductEntry, CartItem
 # Create your views here.
 
 def Home(request):
@@ -16,6 +16,7 @@ def Home(request):
         # colors = [entry.colorId for entry in product_entries]
 
         product.price = product_entry.price
+        product.sku = product_entry.sku
         product.sale_price = product_entry.sale_price
 
         featured_products_with_prices.append({
@@ -41,6 +42,82 @@ def signup(request):
 class signin(LoginView):
     form_class = UserSignInForm
     template_name = 'signin.html'
+
+def view_cart(request):
+    cart_items = CartItem.objects.filter(user=request.user)
+    product_of_the_cart = []
+
+    for cart_item in cart_items:
+        try:
+            product_entry = ProductEntry.objects.get(sku=cart_item.sku)
+            product_info = Product.objects.get(productId=product_entry.productId.productId)
+        except ProductEntry.DoesNotExist:
+            product_entry = None
+        except Product.DoesNotExist:
+            product_info = None
+
+        items = {
+            'product_info': product_info,
+            'product_prices': product_entry,
+            'quantity': cart_item.quantity
+        }
+
+        product_of_the_cart.append({
+            'items': items
+        })
+
+    total_items = len(product_of_the_cart)
+
+    check = 1
+
+    # Debug prints
+    print("Cart Items:", cart_items)
+    print("Product of the Cart:", product_of_the_cart)
+
+    return render(request, "cart.html", {'cart_items': product_of_the_cart, 'total_items': total_items , 'check': check})
+
+def add_to_cart(request):
+    if request.method == "POST":
+        sku = request.POST.get('sku')
+        if sku:
+            try:
+                product_entry = ProductEntry.objects.get(sku=sku)
+                cart_item, created = CartItem.objects.get_or_create(user=request.user, sku=product_entry)
+                if not created:
+                    cart_item.quantity += 1
+                cart_item.save()
+            except ProductEntry.DoesNotExist:
+                # Handle the case where the product entry doesn't exist
+                pass
+            except Exception as e:
+                # Log the exception or handle other errors
+                print(f"Error adding to cart: {e}")
+    return redirect('home')
+
+def show_product(request, sku):
+    product_to_find = ProductEntry.objects.get(sku = sku)
+
+    product = {
+        'price': product_to_find.price,
+        'sale_price': product_to_find.sale_price,
+    }
+
+    product_info = Product.objects.get(productId = product_to_find.productId.productId)
+
+    product.update({
+        'title': product_info.title,
+        'product_type': product_info.product_type,
+        'image': product_info.image,
+        'description': product_info.description,
+        'category': product_info.category,
+        'brand': product_info.brand
+    })
+
+    return render(request, 'products/product-show.html', {'product': product})
+
+def cart(request):
+    return render(request, 'cart/cart.html')
+    
 
 # def signin(request):
 #     if request.user.is_authenticated:
