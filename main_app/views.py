@@ -4,6 +4,8 @@ from .forms import UserSignUpForm, UserSignInForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from .models import Category, Product, ProductColors, ProductEntry, CartItem
+from .forms import ProductFilterForm
+# from .filters import ProductFilter
 # Create your views here.
 
 def Home(request):
@@ -84,9 +86,9 @@ def add_to_cart(request):
         if sku:
             try:
                 product_entry = ProductEntry.objects.get(sku=sku)
-                cart_item, created = CartItem.objects.get_or_create(user=request.user, sku=product_entry)
-                if not created:
-                    cart_item.quantity += 1
+                cart_item, created = CartItem.objects.get_or_create(user=request.user, sku=product_entry, quantity=1)
+                # if not created:
+                #     cart_item.quantity += 1
                 cart_item.save()
             except ProductEntry.DoesNotExist:
                 # Handle the case where the product entry doesn't exist
@@ -164,8 +166,42 @@ def show_product(request, sku):
 
     return render(request, 'products/product-show.html', {'product': product})
 
+def product_search(request):
+    form = ProductFilterForm(request.GET or None)
+    products = Product.objects.all()
 
+    title = None
+    category = None
+    price_min = None
+    price_max = None
     
+
+    if form.is_valid():
+        title = form.cleaned_data.get('title')
+        category = form.cleaned_data.get('category')
+        price_min = form.cleaned_data.get('price_min')
+        price_max = form.cleaned_data.get('price_max')
+        
+
+    if title is not None:
+        products = products.filter(title__icontains=title)
+    if category is not None:
+        products = products.filter(category=category)
+    if price_min is not None:
+        products = products.filter(productentry__price__gte=price_min)
+    if price_max is not None:
+        products = products.filter(productentry__price__lte=price_max)
+
+    if request.headers.get('HX-Request'):
+        return render(request, 'products/product_list.html', {'products': products})
+
+    context = {
+        'form': form,
+        'products': products
+    }
+
+    return render(request, 'products/index.html', {'form': form,
+        'products': products})
 
 # def signin(request):
 #     if request.user.is_authenticated:

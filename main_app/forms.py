@@ -3,6 +3,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
+from .models import Product, Category
 
 class UserSignUpForm(UserCreationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={"class": "input","placeholder":"username"}))
@@ -30,3 +31,10 @@ class UserSignInForm(AuthenticationForm):
         super(UserSignInForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs.update({'placeholder':'Username', 'class':'input'})
         self.fields['password'].widget.attrs.update({'placeholder':'Password', 'class':'input'})
+
+class ProductFilterForm(forms.Form):
+    title = forms.CharField(required=False, label='Title', widget=forms.TextInput(attrs={"class": "input","placeholder":"Name of the product"}))
+    category = forms.ModelChoiceField(queryset=Category.objects.all(), required=False, label='Category', widget=forms.CheckboxSelectMultiple())
+    price_min = forms.DecimalField(required=False, label='Min Price', decimal_places=2, max_digits=10)
+    price_max = forms.DecimalField(required=False, label='Max Price', decimal_places=2, max_digits=10)
+    

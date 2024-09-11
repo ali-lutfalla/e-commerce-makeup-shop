@@ -1,0 +1,39 @@
+<div class="columns is-multiline">
+    {% for product in products %}
+    <div class="column is-one-third">
+        <div class="card has-background-link">
+            <a href="#">
+                <div class="card">
+                    <div class="card-image">
+                        <figure class="image is-16by9">
+                            <img src="{{ product.image }}" alt="{{ product.title }}" />
+                        </figure>
+                    </div>
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content">
+                                <p class="title is-4">{{ product.title }}</p>
+                                <p class="subtitle is-6">{{ product.productentry_set.first.price }}</p>
+                                {% if product.productentry_set.first.sale_price %}
+                                <p class="subtitle is-6">{{ product.productentry_set.first.sale_price }}</p>
+                                {% endif %}
+                                <p class="subtitle is-12">Product Type: {{ product.product_type }}</p>
+                                <p class="subtitle is-12">Brand: {{ product.brand }}</p>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <a hx-post="{% url 'addtocart' %}" hx-vals='{"sku": "{{ product.productentry_set.first.sku }}"}' hx-swap="none">
+                                <span class="icon">
+                                    <i class="fas fa-heart"></i>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    {% empty %}
+    <p>No products found.</p>
+    {% endfor %}
+</div>

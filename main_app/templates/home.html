@@ -55,6 +55,7 @@
             </div>
         </nav>
     </header>
+    {% block content %}
     
     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-indicators">
@@ -130,7 +131,10 @@
           </div>
       </div>
     </section>
+    {% endblock %}
+
     
+
 
     <!-- Carousel JS -->
     <script src="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.3/dist/js/bulma-carousel.min.js"></script>
@@ -163,7 +167,6 @@ function showSlides(n) {
 }
 		</script>
 
-    {% block content %}
-    {% endblock %}
+    
 </body>
 </html>
