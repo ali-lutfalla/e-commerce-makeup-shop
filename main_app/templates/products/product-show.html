@@ -39,7 +39,11 @@
         <p>Price: {{ product.price }}</p>
         {% endif %}
         <p>Description: {{ product.description }}</p>
-        <button>Add to cart</button>
+        <a  hx-post="{% url 'addtocart' %}" hx-vals='{"sku": "{{ product.sku }}"}' hx-swap="none">
+            <span class="icon">
+                <i class="fas fa-shopping-bag"></i>
+            </span>
+        </a>
     </div>
 
 </div>

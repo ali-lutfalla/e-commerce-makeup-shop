@@ -151,6 +151,7 @@ def show_product(request, sku):
     product = {
         'price': product_to_find.price,
         'sale_price': product_to_find.sale_price,
+        'sku': product_to_find.sku
     }
 
     product_info = Product.objects.get(productId = product_to_find.productId.productId)
@@ -174,6 +175,7 @@ def product_search(request):
     category = None
     price_min = None
     price_max = None
+    brands = None
     
 
     if form.is_valid():
@@ -181,6 +183,7 @@ def product_search(request):
         category = form.cleaned_data.get('category')
         price_min = form.cleaned_data.get('price_min')
         price_max = form.cleaned_data.get('price_max')
+        brands = form.cleaned_data.get('brands')
         
 
     if title is not None:
@@ -191,6 +194,8 @@ def product_search(request):
         products = products.filter(productentry__price__gte=price_min)
     if price_max is not None:
         products = products.filter(productentry__price__lte=price_max)
+    if brands is not None:
+        products = products.filter(brand__in=brands)
 
     if request.headers.get('HX-Request'):
         return render(request, 'products/product_list.html', {'products': products})

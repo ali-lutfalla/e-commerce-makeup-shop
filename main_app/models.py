@@ -16,7 +16,21 @@ CATEGORIES = (
     ('nail polish', 'Nail Polish'),
 )
 
-BRANDS = (
+
+class Category(models.Model):
+    categoryId = ShortUUIDField(unique = True, length=10, max_length=20, prefix="cat", alphabet="abcdefghijk123456789")
+    title = models.CharField(choices=CATEGORIES)
+    image = models.CharField()
+
+    class Meta:
+        verbose_name_plural = "Categories"
+
+    def __str__(self):
+        return self.title
+
+class Product(models.Model):
+
+    BRANDS = (
     ('almay', 'Almay'),
     ('alva', 'Alva'),
     ('anna sui', 'Anna Sui'),
@@ -76,18 +90,6 @@ BRANDS = (
     ('zorah biocosmetiques', 'Zorah Biocosmetiques'),
 )
 
-class Category(models.Model):
-    categoryId = ShortUUIDField(unique = True, length=10, max_length=20, prefix="cat", alphabet="abcdefghijk123456789")
-    title = models.CharField(choices=CATEGORIES)
-    image = models.CharField()
-
-    class Meta:
-        verbose_name_plural = "Categories"
-
-    def __str__(self):
-        return self.title
-
-class Product(models.Model):
     productId = ShortUUIDField(unique = True, length=10, max_length=20, prefix="pro", alphabet="abcdefghijk123456789")
     title = models.CharField(max_length=150)
     product_type = models.CharField(max_length=150)

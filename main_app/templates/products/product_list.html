@@ -2,7 +2,7 @@
     {% for product in products %}
     <div class="column is-one-third">
         <div class="card has-background-link">
-            <a href="#">
+            <a href="{% url 'show_product' product.productentry_set.first.sku %}">
                 <div class="card">
                     <div class="card-image">
                         <figure class="image is-16by9">
@@ -13,18 +13,18 @@
                         <div class="media">
                             <div class="media-content">
                                 <p class="title is-4">{{ product.title }}</p>
-                                <p class="subtitle is-6">{{ product.productentry_set.first.price }}</p>
+                                <p class=" is-6">price:{{ product.productentry_set.first.price }} BD</p>
                                 {% if product.productentry_set.first.sale_price %}
-                                <p class="subtitle is-6">{{ product.productentry_set.first.sale_price }}</p>
+                                <p class=" is-6">sale price:{{ product.productentry_set.first.sale_price }} BD</p>
                                 {% endif %}
-                                <p class="subtitle is-12">Product Type: {{ product.product_type }}</p>
-                                <p class="subtitle is-12">Brand: {{ product.brand }}</p>
+                                <p class=" is-12">Product Type: {{ product.product_type }}</p>
+                                <p class=" is-12">Brand: {{ product.brand }}</p>
                             </div>
                         </div>
                         <div class="content">
                             <a hx-post="{% url 'addtocart' %}" hx-vals='{"sku": "{{ product.productentry_set.first.sku }}"}' hx-swap="none">
                                 <span class="icon">
-                                    <i class="fas fa-heart"></i>
+                                    <i class="fas fa-shopping-bag"></i>
                                 </span>
                             </a>
                         </div>

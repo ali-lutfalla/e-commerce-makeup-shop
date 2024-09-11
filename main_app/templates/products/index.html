@@ -5,8 +5,41 @@
 <section class="section">
     <div class="container">
         <form hx-get="{% url 'product_search' %}" hx-trigger="submit" hx-target="#product-list" hx-swap="innerHTML">
-            {{ form.as_p }}
-            <button type="submit">Search</button>
+          <label class="label" for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+            {{form.title}}
+            <div class="accordion" id="accordionPanelsStayOpenExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                    <label class="label" for="{{ form.category.id_for_label }}">{{ form.category.label }}</label>
+                  </button>
+                </h2>
+                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                  <div class="accordion-body">
+                    {{ form.category }}
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                    <label class="label" for="{{ form.brands.id_for_label }}">{{ form.brands.label }}</label>
+                  </button>
+                </h2>
+                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+                  <div class="accordion-body">
+                    {{form.brands}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <label class="label" for="{{ form.price_min.id_for_label }}">{{ form.price_min.label }}</label>
+            {{ form.price_min }}
+            <label class="label" for="{{ form.price_max.id_for_label }}">{{ form.price_max.label }}</label>
+            {{ form.price_max }}
+            <div class="text-center">
+              <button type="submit" class="button is-medium my-3">Search</button>
+            </div>
         </form>
         
         <!-- Container where the product list will be updated -->
