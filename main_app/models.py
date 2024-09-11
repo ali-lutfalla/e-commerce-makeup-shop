@@ -141,6 +141,16 @@ class CartItem(models.Model):
         return self.cart_item_id
 
     
+class WishlistItem(models.Model):
+    wishlisit_item_id = ShortUUIDField(unique = True, length=10, max_length=20, prefix="wishlist-item", alphabet="abcdefghijk123456789")
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    sku = models.ForeignKey(ProductEntry, on_delete=models.SET_NULL, null=True)
+
+    class Meta:
+        verbose_name_plural = "Wishlist Items"
+
+    def __str__(self) -> str:
+        return self.wishlisit_item_id
 
 
 
