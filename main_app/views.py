@@ -48,7 +48,7 @@ class signin(LoginView):
 def view_cart(request):
     cart_items = CartItem.objects.filter(user=request.user)
     product_of_the_cart = []
-    total_price = 0  # Initialize total price
+    total_price = 0  
 
     for cart_item in cart_items:
         try:
@@ -60,8 +60,12 @@ def view_cart(request):
             product_info = None
 
         if product_entry and product_info:
-            item_total = product_entry.price * cart_item.quantity  # Calculate total for this item
-            total_price += item_total  # Add to total price
+            if product_entry.sale_price is not None:
+                item_total = product_entry.sale_price * cart_item.quantity  
+                total_price += item_total  
+            else:
+                item_total = product_entry.price * cart_item.quantity  
+                total_price += item_total  
 
             items = {
                 'product_info': product_info,
@@ -87,14 +91,10 @@ def add_to_cart(request):
             try:
                 product_entry = ProductEntry.objects.get(sku=sku)
                 cart_item, created = CartItem.objects.get_or_create(user=request.user, sku=product_entry, quantity=1)
-                # if not created:
-                #     cart_item.quantity += 1
                 cart_item.save()
             except ProductEntry.DoesNotExist:
-                # Handle the case where the product entry doesn't exist
                 pass
             except Exception as e:
-                # Log the exception or handle other errors
                 print(f"Error adding to cart: {e}")
     return redirect('home')
 
@@ -113,7 +113,7 @@ def update_cart(request, cartItemId):
     
     cart_items = CartItem.objects.filter(user=request.user)
     product_of_the_cart = []
-    total_price = 0  # Initialize total price
+    total_price = 0 
 
     for cart_item in cart_items:
         try:
@@ -125,8 +125,12 @@ def update_cart(request, cartItemId):
             product_info = None
 
         if product_entry and product_info:
-            item_total = product_entry.price * cart_item.quantity  # Calculate total for this item
-            total_price += item_total  # Add to total price
+            if product_entry.sale_price is not None:
+                item_total = product_entry.sale_price * cart_item.quantity  
+                total_price += item_total  
+            else:
+                item_total = product_entry.price * cart_item.quantity  
+                total_price += item_total   
 
             items = {
                 'product_info': product_info,
