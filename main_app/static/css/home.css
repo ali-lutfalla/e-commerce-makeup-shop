@@ -4,10 +4,16 @@
     font-style: normal;
     font-size:x-large;
     color: purple;
+    text-decoration: none;
   }  
 
 a[class~="nav-item"] {
     color: purple;
+    text-decoration: none;
+}
+
+.no-underline {
+    text-decoration: none;
 }
 
 .slider-text {
