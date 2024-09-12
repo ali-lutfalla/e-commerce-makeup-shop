@@ -7,12 +7,12 @@
         <div class="col-md-8">
             <div class="card mb-4">
                 <div class="card-header py-3">
-                    <h5 class="mb-0">Cart items: {{ total_items }}</h5>
+                    <h5 class="mb-0">Wishlist items: {{ total_items }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="text-center">
                         {% for wishlist_item in wishlist_items %}
-                        <a href="{% url 'show_product' wishlist.items.sku %}"> 
+                        <a href="{% url 'show_product' wishlist_item.items.sku %}"> 
                         <div class="card mb-3">
                             <div class="row g-0">
                                 <div class="col-md-4">
@@ -26,9 +26,14 @@
                                         {% else %}
                                         <p class="card-text">Product Price:{{ wishlist_item.items.product_prices.price }}</p>
                                         {%endif%}
-                                        <a  hx-post="{% url 'addtocart' %}" hx-vals='{"sku": "{{ wishlist.items.sku }}"}' hx-swap="none">
+                                        <a  hx-post="{% url 'addtocart' %}" hx-vals='{"sku": "{{ wishlist_item.items.sku }}"}' hx-swap="none">
                                             <span class="icon">
                                                 <i class="fas fa-shopping-bag"></i>
+                                            </span>
+                                        </a>
+                                        <a  hx-post="{% url 'remove_from_wishlist' %}" hx-vals='{"sku": "{{ wishlist_item.items.sku }}"}' hx-swap="none">
+                                            <span class="icon">
+                                                <i class="fas fa-trash"></i>
                                             </span>
                                         </a>
                                     </div>
@@ -36,6 +41,8 @@
                             </div>
                         </div>
                     </a>
+                    {%empty%}
+                    <p>no items yet!</p>
                         {% endfor %}
                     </div>
                 </div>

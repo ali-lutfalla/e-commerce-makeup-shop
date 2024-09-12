@@ -237,15 +237,10 @@ def view_wishlist(request):
         try:
             product_entry = ProductEntry.objects.get(sku=wishlist_item.sku)
             product_info = Product.objects.get(productId=product_entry.productId.productId)
-        except ProductEntry.DoesNotExist:
-            product_entry = None
-        except Product.DoesNotExist:
-            product_info = None
 
             items = {
                 'product_info': product_info,
                 'product_prices': product_entry,
-                'quantity': wishlist_item.quantity,
                 'id_of_the_item': wishlist_item.wishlisit_item_id,
                 'sku': wishlist_item.sku
             }
@@ -254,9 +249,27 @@ def view_wishlist(request):
                 'items': items
             })
 
+        except ProductEntry.DoesNotExist:
+            product_entry = None
+        except Product.DoesNotExist:
+            product_info = None
+
     total_items = len(products_of_the_wishlist)
 
     return render(request, "wishlist/wishlist.html", {'wishlist_items': products_of_the_wishlist, 'total_items': total_items})
+
+def remove_wishlist_item(request):
+    if request.method == "POST":
+        sku = request.POST.get('sku')
+        if sku:
+            try: 
+                product_entry = ProductEntry.objects.get(sku=sku)
+                wishlist_item = WishlistItem.objects.get(user = request.user, sku = product_entry)
+                wishlist_item.delete()
+            except Exception as e:
+                print(f"Error removing from wishlist: {e}")
+    
+    return redirect('view_wishlist')
 
 
 # def signin(request):
