@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView
 from .forms import UserSignUpForm, UserSignInForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
-from .models import Category, Product, ProductColors, ProductEntry, CartItem
+from .models import Category, Product, ProductColors, ProductEntry, CartItem, WishlistItem
 from .forms import ProductFilterForm
 # from .filters import ProductFilter
 # Create your views here.
@@ -90,8 +90,8 @@ def add_to_cart(request):
         if sku:
             try:
                 product_entry = ProductEntry.objects.get(sku=sku)
-                cart_item, created = CartItem.objects.get_or_create(user=request.user, sku=product_entry, quantity=1)
-                cart_item.save()
+                CartItem.objects.get_or_create(user=request.user, sku=product_entry, quantity=1)
+                
             except ProductEntry.DoesNotExist:
                 pass
             except Exception as e:
@@ -137,7 +137,8 @@ def update_cart(request, cartItemId):
                 'product_prices': product_entry,
                 'quantity': cart_item.quantity,
                 'item_total': item_total,
-                'id_of_the_item': cart_item.cart_item_id
+                'id_of_the_item': cart_item.cart_item_id,
+                'sku': cart_item.sku
             }
 
             product_of_the_cart.append({
@@ -211,6 +212,52 @@ def product_search(request):
 
     return render(request, 'products/index.html', {'form': form,
         'products': products})
+
+
+def add_to_wishlist(request):
+    if request.method == "POST":
+        sku = request.POST.get('sku')
+        if sku:
+            try:
+                product_entry = ProductEntry.objects.get(sku=sku)
+                wishlist_item = WishlistItem.objects.get_or_create(user=request.user, sku=product_entry)
+                
+            except ProductEntry.DoesNotExist:
+                pass
+            except Exception as e:
+                print(f"Error adding to wishlist: {e}")
+    return redirect('home')
+
+
+def view_wishlist(request):
+    wishlist_items = WishlistItem.objects.filter(user=request.user)
+    products_of_the_wishlist = []
+
+    for wishlist_item in wishlist_items:
+        try:
+            product_entry = ProductEntry.objects.get(sku=wishlist_item.sku)
+            product_info = Product.objects.get(productId=product_entry.productId.productId)
+        except ProductEntry.DoesNotExist:
+            product_entry = None
+        except Product.DoesNotExist:
+            product_info = None
+
+            items = {
+                'product_info': product_info,
+                'product_prices': product_entry,
+                'quantity': wishlist_item.quantity,
+                'id_of_the_item': wishlist_item.wishlisit_item_id,
+                'sku': wishlist_item.sku
+            }
+
+            products_of_the_wishlist.append({
+                'items': items
+            })
+
+    total_items = len(products_of_the_wishlist)
+
+    return render(request, "wishlist/wishlist.html", {'wishlist_items': products_of_the_wishlist, 'total_items': total_items})
+
 
 # def signin(request):
 #     if request.user.is_authenticated:

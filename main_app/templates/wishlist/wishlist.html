@@ -1,0 +1,53 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row d-flex justify-content-center my-4">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header py-3">
+                    <h5 class="mb-0">Cart items: {{ total_items }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        {% for wishlist_item in wishlist_items %}
+                        <a href="{% url 'show_product' wishlist.items.sku %}"> 
+                        <div class="card mb-3">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img src="{{ wishlist_item.items.product_info.image }}" class="img-fluid rounded-start" alt="{{ wishlist_item.items.product_info.title }}">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Product name:{{ wishlist_item.items.product_info.title }}</h5>
+                                        {% if  wishlist_item.items.product_prices.sale_price %}
+                                        <p class="card-text">Product Price:{{ wishlist_item.items.product_prices.sale_price }}</p>
+                                        {% else %}
+                                        <p class="card-text">Product Price:{{ wishlist_item.items.product_prices.price }}</p>
+                                        {%endif%}
+                                        <a  hx-post="{% url 'addtocart' %}" hx-vals='{"sku": "{{ wishlist.items.sku }}"}' hx-swap="none">
+                                            <span class="icon">
+                                                <i class="fas fa-shopping-bag"></i>
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.body.addEventListener('htmx:afterRequest', function(evt) {
+        if (evt.detail.successful) {
+            window.location.reload();
+        }
+    });
+</script> 
+{% endblock %}
