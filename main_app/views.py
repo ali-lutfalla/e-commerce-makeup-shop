@@ -5,8 +5,8 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from .models import Category, Product, ProductColors, ProductEntry, CartItem, WishlistItem
 from .forms import ProductFilterForm
-# from .filters import ProductFilter
-# Create your views here.
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 def Home(request):
     featured_products = Product.objects.filter(featured=True)
@@ -14,8 +14,6 @@ def Home(request):
 
     for product in featured_products:
         product_entry = ProductEntry.objects.filter(productId=product).first()
-
-        # colors = [entry.colorId for entry in product_entries]
 
         product.price = product_entry.price
         product.sku = product_entry.sku
@@ -177,7 +175,7 @@ def product_search(request):
     products = Product.objects.all()
 
     title = None
-    category = None
+    categories = None
     price_min = None
     price_max = None
     brands = None
@@ -185,7 +183,7 @@ def product_search(request):
 
     if form.is_valid():
         title = form.cleaned_data.get('title')
-        category = form.cleaned_data.get('category')
+        categories = form.cleaned_data.get('category')
         price_min = form.cleaned_data.get('price_min')
         price_max = form.cleaned_data.get('price_max')
         brands = form.cleaned_data.get('brands')
@@ -193,14 +191,14 @@ def product_search(request):
 
     if title is not None:
         products = products.filter(title__icontains=title)
-    if category is not None:
-        products = products.filter(category=category)
+    if categories:
+        products = products.filter(category__in=categories)
+    if brands:
+        products = products.filter(brand__in=brands)
     if price_min is not None:
         products = products.filter(productentry__price__gte=price_min)
     if price_max is not None:
         products = products.filter(productentry__price__lte=price_max)
-    if brands is not None:
-        products = products.filter(brand__in=brands)
 
     if request.headers.get('HX-Request'):
         return render(request, 'products/product_list.html', {'products': products})
@@ -272,26 +270,3 @@ def remove_wishlist_item(request):
     return redirect('view_wishlist')
 
 
-# def signin(request):
-#     if request.user.is_authenticated:
-#         return redirect("home")
-#     error_message = ''
-#     if request.method == "POST":
-#         email = request.POST.get("email")
-#         password = request.POST.get("password")
-
-#         try:
-#             user = User.objects.get(email=email)
-#         except:
-#             error_message = "Invalid sign in - try again"
-
-#         user = authenticate(request, email=email, password=password)
-
-#         if user is not None:
-#             login(request, user)
-#             return redirect("home")
-#         else:
-#             error_message = "Invalid sign in - try again"
-
-#     context = {'error_message': error_message}
-#     return render(request, "signin.html", context)

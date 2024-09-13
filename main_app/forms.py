@@ -34,7 +34,7 @@ class UserSignInForm(AuthenticationForm):
 
 class ProductFilterForm(forms.Form):
     title = forms.CharField(required=False, label='Title', widget=forms.TextInput(attrs={"class": "input","placeholder":"Name of the product"}))
-    category = forms.ModelChoiceField(queryset=Category.objects.all(), required=False, label='Category', widget=forms.CheckboxSelectMultiple())
+    category = forms.ModelMultipleChoiceField(queryset=Category.objects.all(), required=False, label='Category', widget=forms.CheckboxSelectMultiple())
     price_min = forms.DecimalField(required=False, label='Min Price', decimal_places=2, max_digits=10, widget=forms.NumberInput(attrs={"class": "input"}))
     price_max = forms.DecimalField(required=False, label='Max Price', decimal_places=2, max_digits=10, widget=forms.NumberInput(attrs={"class": "input"}))
     brands = forms.MultipleChoiceField(

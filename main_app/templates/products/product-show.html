@@ -44,6 +44,11 @@
                 <i class="fas fa-shopping-bag"></i>
             </span>
         </a>
+        <a  hx-post="{% url 'addtowishlist' %}" hx-vals='{"sku": "{{ product.sku }}"}' hx-swap="none">
+            <span class="icon">
+                <i class="fas fa-heart"></i>
+            </span>
+        </a>
     </div>
 
 </div>
